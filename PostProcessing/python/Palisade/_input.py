@@ -1249,7 +1249,7 @@ class InputROOT(object):
                 _reqs.append(dict(object_spec=_obj_spec, force_rerequest=False, **other_request_params))
         self.request(_reqs)
 
-    def register_local(self, name, value):
+    def register_local(self, name, value, override=False):
         """
         Register a local variable to be used when evaluating an expression using
         :py:meth:`~DijetAnalysis.PostProcessing.Palisade.InputROOT.get_expr`
@@ -1261,11 +1261,12 @@ class InputROOT(object):
             value :
                 any Python object to be made accessible in expressions under :py:const:`name`.
         """
-        try:
-            assert name not in self._locals
-        except AssertionError as e:
-            print("[ERROR] Cannot register local '{}' with value {}! It already exists and is: {}".format(name, value, self._locals[name]))
-            raise e
+        if not override:
+            try:
+                assert name not in self._locals
+            except AssertionError as e:
+                print("[ERROR] Cannot register local '{}' with value {}! It already exists and is: {}".format(name, value, self._locals[name]))
+                raise e
         self._locals[name] = value
 
     def clear_locals(self):

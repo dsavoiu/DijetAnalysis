@@ -553,7 +553,7 @@ class PlotProcessor(_ProcessorBase):
         _mplrc()
 
         # register expressions as locals for lookup by the input controller's `get` call
-        self._input_controller.register_local('expressions', [_subplot_cfg['expression'] for _subplot_cfg in config['subplots']])
+        self._input_controller.register_local('expressions', [_subplot_cfg['expression'] for _subplot_cfg in config['subplots']], override=True)
 
         _filename = os.path.join(self._output_folder, config['filename'])
 
@@ -1084,7 +1084,7 @@ class PlotProcessor(_ProcessorBase):
                 yaml.dump(_config_for_dump, _yaml_file)
 
         # de-register all the locals after a plot is done
-        self._input_controller.clear_locals()
+        # self._input_controller.clear_locals()
 
 
     # -- register action slots
